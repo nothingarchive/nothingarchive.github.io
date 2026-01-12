@@ -1,66 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Software Updates - Nothing Space</title>
+    <title>Software - Nothing Space</title>
     <meta name="google-adsense-account" content="ca-pub-5140781527793808">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5140781527793808" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* --- SAME GLOBAL STYLES --- */
         :root { --bg: #000; --card: #0c0c0c; --text: #fff; --border: #222; }
-        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; padding: 20px; max-width: 800px; margin: 0 auto; }
+        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; padding: 20px; max-width: 600px; margin: 0 auto; }
         
-        .nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; }
-        .back-btn { background: #fff; color: #000; padding: 5px 15px; text-decoration: none; font-weight: bold; border-radius: 5px; }
+        /* HEADER WITH BACK BUTTON */
+        .page-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        h1 { font-size: 2.5rem; margin: 0; }
+        .back-btn { background: #fff; color: #000; padding: 8px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 1.2rem; }
+
+        /* UI ELEMENTS */
+        .guide-box { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        select { width: 100%; padding: 20px; background: var(--card); border: 1px solid var(--border); color: #fff; font-size: 1.4rem; border-radius: 20px; margin-bottom: 20px; outline: none; font-family: inherit; }
         
-        select, .btn { width: 100%; padding: 15px; background: var(--card); border: 1px solid var(--border); color: #fff; font-family: inherit; font-size: 1.2rem; margin-bottom: 15px; border-radius: 10px; }
-        .btn { background: #fff; color: #000; cursor: pointer; font-weight: bold; }
+        .result-card { display: none; background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 20px; text-align: center; }
+        .result-card img { width: 80px; margin-bottom: 15px; border-radius: 10px; }
         
-        #resultBox { display: none; background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--border); text-align: center; }
-        img { width: 100px; margin-bottom: 10px; }
+        .btn { width: 100%; padding: 15px; background: #fff; color: #000; border: none; border-radius: 20px; font-size: 1.4rem; font-weight: bold; cursor: pointer; margin-top: 10px; font-family: inherit; }
         
-        footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; opacity: 0.7; }
-        .f-links a { margin: 0 10px; color: #fff; text-decoration: none; }
+        footer { margin-top: 50px; text-align: center; opacity: 0.5; }
     </style>
 </head>
 <body>
-
-    <div class="nav">
+    
+    <div class="page-head">
         <h1>SYSTEM UPDATE</h1>
-        <a href="index.html" class="back-btn">← HOME</a>
+        <a href="index.html" class="back-btn">← BACK</a>
     </div>
 
-    <div style="background: var(--card); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-        <h3>HOW TO UPDATE?</h3>
-        <p style="opacity: 0.7;">1. Download Beta Tool APK below.<br>2. Create "OTA" folder in storage.<br>3. Paste ZIP file there.</p>
-        <button class="btn" onclick="window.location.href='https://github.com/nothingcommunity/Testing/raw/refs/heads/main/Apps/Beta%20Updates%20Hub.apk'">DOWNLOAD TOOL APK</button>
+    <div class="guide-box">
+        <h3 style="opacity: 0.5; margin-bottom: 10px;">INSTRUCTIONS</h3>
+        <p>1. Download Beta Tool APK.<br>2. Create "OTA" folder.<br>3. Paste ZIP inside.</p>
+        <button class="btn" onclick="window.location.href='https://github.com/nothingcommunity/Testing/raw/refs/heads/main/Apps/Beta%20Updates%20Hub.apk'">DOWNLOAD TOOL</button>
     </div>
 
     <select id="swSelect" onchange="showData()">
-        <option value="">SELECT YOUR DEVICE</option>
+        <option value="">SELECT DEVICE MODEL</option>
         <option value="p1">NOTHING PHONE (1)</option>
         <option value="p2">NOTHING PHONE (2)</option>
         <option value="p2a">NOTHING PHONE (2A)</option>
         <option value="cmf1">CMF PHONE 1</option>
     </select>
 
-    <div id="resultBox">
+    <div id="resultBox" class="result-card">
         <img id="dImg" src="">
-        <h2 id="dName">DEVICE NAME</h2>
-        <button class="btn" id="dBtn" onclick="download()">DOWNLOAD FIRMWARE</button>
+        <h2 id="dName">DEVICE</h2>
+        <button class="btn" onclick="download()">DOWNLOAD OTA ZIP</button>
     </div>
 
     <footer>
-        <div class="f-links"><a href="about.html">About</a> | <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a></div>
         <p>NOTHING SPACE © 2026</p>
     </footer>
 
     <script>
         let DATA = {};
         let currentUrl = "";
-        
-        // Load Data
+
+        // Fetch Logic
         fetch("https://raw.githubusercontent.com/nothingcommunity/Testing/main/Software/software.json")
             .then(res => res.json()).then(d => { DATA = d.SOFTWARE; });
 
@@ -75,7 +81,6 @@
         }
         function download() {
             if(currentUrl) window.location.href = currentUrl;
-            else alert("Select Device First");
         }
     </script>
 </body>
