@@ -4,60 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nothing Space - Home</title>
+    
     <meta name="google-adsense-account" content="ca-pub-5140781527793808">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5140781527793808" crossorigin="anonymous"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* COMMON CSS */
-        :root { --bg: #000; --card: #0c0c0c; --text: #fff; --border: #222; }
-        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; padding: 20px; max-width: 800px; margin: 0 auto; }
+        /* --- GLOBAL STYLES (Ye har page me same rahega) --- */
+        :root { 
+            --bg: #000; --card: #0c0c0c; --text: #fff; --border: #222; 
+            --dot-bg: #222; --accent: #d71921;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; min-height: 100vh; overflow-x: hidden; }
         a { text-decoration: none; color: inherit; }
         
+        /* BACKGROUND ANIMATION */
+        .stars-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: blink 3s infinite; }
+        @keyframes blink { 0%,100% {opacity:0} 50% {opacity:0.7} }
+        .canvas { position: fixed; inset: 0; background-image: radial-gradient(var(--dot-bg) 1px, transparent 1px); background-size: 30px 30px; z-index: -1; opacity: 0.5; pointer-events: none; }
+        
         /* HEADER */
-        header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        h1 { font-size: 3.5rem; margin: 0; line-height: 0.9; }
-        .subtitle { letter-spacing: 2px; opacity: 0.5; }
+        header { max-width: 1000px; margin: 40px auto; text-align: center; padding: 0 20px; }
+        h1 { font-size: 4rem; line-height: 0.9; margin: 0; letter-spacing: -2px; }
+        .sub-text { opacity: 0.5; letter-spacing: 2px; font-size: 1rem; margin-bottom: 5px; }
 
-        /* GRID */
-        .bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-        .tile { background: var(--card); border: 1px solid var(--border); border-radius: 25px; padding: 25px; transition: 0.2s; display: block; }
+        /* BENTO GRID */
+        .bento { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 900px; margin: 0 auto; padding: 20px; }
+        @media (min-width: 768px) { .bento { grid-template-columns: repeat(3, 1fr); } }
+
+        .tile { 
+            background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 25px; 
+            transition: 0.3s; position: relative; overflow: hidden; cursor: pointer;
+        }
         .tile:hover { border-color: #fff; transform: translateY(-3px); }
-        .tile h2 { font-size: 1.8rem; margin: 0; }
-        .tile p { opacity: 0.5; font-size: 1rem; margin-top: 5px; text-transform: uppercase; }
+        .tile h2 { font-size: 2rem; margin: 0; }
+        .tile p { opacity: 0.4; margin-top: 5px; font-size: 1rem; }
+        .full { grid-column: span 2; }
+        @media (min-width: 768px) { .full { grid-column: span 1; } }
 
         /* FOOTER */
-        footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; opacity: 0.7; }
-        .f-links a { margin: 0 10px; font-size: 1.1rem; }
-        .disclaimer { font-size: 0.8rem; opacity: 0.5; margin-top: 15px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        footer { text-align: center; padding: 40px; border-top: 1px solid var(--border); margin-top: 40px; background: var(--card); }
+        .links a { margin: 0 10px; opacity: 0.7; font-size: 1.1rem; }
+        .links a:hover { opacity: 1; text-decoration: underline; }
     </style>
 </head>
 <body>
 
+    <div class="stars-container" id="starField"></div>
+    <div class="canvas"></div>
+
     <header>
-        <p class="subtitle">UNOFFICIAL HUB</p>
+        <p class="sub-text">UNOFFICIAL HUB</p>
         <h1>NOTHING<br>SPACE</h1>
     </header>
 
     <div class="bento">
-        <a href="software.html" class="tile"><h2>SOFTWARE</h2><p>OTA DOWNLOADS</p></a>
-        <a href="ringtones.html" class="tile"><h2>RINGTONES</h2><p>MP3 LIBRARY</p></a>
-        <a href="wallpapers.html" class="tile"><h2>WALLPAPERS</h2><p>HD GALLERY</p></a>
-        <a href="playground.html" class="tile"><h2>PLAYGROUND</h2><p>PRESETS & TOOLS</p></a>
-        <a href="service.html" class="tile"><h2>SERVICE</h2><p>LOCATE CENTERS</p></a>
-        <a href="community.html" class="tile"><h2>COMMUNITY</h2><p>LIVE CHAT</p></a>
+        <a href="software.html" class="tile full">
+            <h2>SOFTWARE</h2>
+            <p>OFFICIAL OTA DOWNLOADS</p>
+        </a>
+        <a href="ringtones.html" class="tile full">
+            <h2>RINGTONES</h2>
+            <p>MP3 LIBRARY</p>
+        </a>
+        <a href="wallpapers.html" class="tile full">
+            <h2>WALLPAPERS</h2>
+            <p>HD GALLERY</p>
+        </a>
+        <a href="playground.html" class="tile full">
+            <h2>PLAYGROUND</h2>
+            <p>CAMERA PRESETS</p>
+        </a>
+        <a href="service.html" class="tile full">
+            <h2>SERVICE</h2>
+            <p>LOCATE CENTERS</p>
+        </a>
+        <a href="community.html" class="tile full">
+            <h2>COMMUNITY</h2>
+            <p>CHAT BOARD</p>
+        </a>
     </div>
 
     <footer>
-        <div class="f-links">
+        <div class="links">
             <a href="about.html">ABOUT</a>
             <a href="privacy.html">PRIVACY</a>
             <a href="terms.html">TERMS</a>
             <a href="contact.html">CONTACT</a>
         </div>
-        <p style="margin-top: 20px;">NOTHING SPACE © 2026</p>
-        <p class="disclaimer">DISCLAIMER: This is a fan-made website. Not affiliated with Nothing Technology Ltd.</p>
+        <p style="margin-top:20px; opacity:0.3;">NOTHING SPACE © 2026</p>
     </footer>
+
+    <script>
+        // Star Animation Logic
+        const field = document.getElementById('starField');
+        for(let i=0; i<100; i++) {
+            const s = document.createElement('div'); s.className = 'star';
+            const size = Math.random() * 3;
+            Object.assign(s.style, { width:size+'px', height:size+'px', top:Math.random()*100+'%', left:Math.random()*100+'%', animationDuration: (2+Math.random()*3)+'s' });
+            field.appendChild(s);
+        }
+    </script>
 
 </body>
 </html>
