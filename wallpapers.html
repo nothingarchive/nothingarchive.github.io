@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallpapers - Nothing Space</title>
+    <meta name="google-adsense-account" content="ca-pub-5140781527793808">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5140781527793808" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #000; --card: #0c0c0c; --text: #fff; --border: #222; }
+        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; padding: 20px; max-width: 800px; margin: 0 auto; }
+        
+        .nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; }
+        .back-btn { background: #fff; color: #000; padding: 5px 15px; text-decoration: none; font-weight: bold; border-radius: 5px; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .card { height: 250px; background: #111; border-radius: 15px; overflow: hidden; position: relative; border: 1px solid var(--border); }
+        .card img { width: 100%; height: 100%; object-fit: cover; }
+        .dl-btn { position: absolute; bottom: 0; width: 100%; background: rgba(255,255,255,0.9); color: #000; border: none; padding: 10px; cursor: pointer; font-weight: bold; font-family: inherit; }
+        
+        footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; opacity: 0.7; }
+        .f-links a { margin: 0 10px; color: #fff; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <h1>WALLPAPERS</h1>
+        <a href="index.html" class="back-btn">← HOME</a>
+    </div>
+
+    <div class="grid" id="grid">
+        <p>Loading Gallery...</p>
+    </div>
+
+    <footer>
+        <div class="f-links"><a href="about.html">About</a> | <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a></div>
+        <p>NOTHING SPACE © 2026</p>
+    </footer>
+
+    <script>
+        fetch("https://raw.githubusercontent.com/nothingcommunity/Testing/main/Wallpapers/Walls/wallpapers.json")
+            .then(res => res.json())
+            .then(data => {
+                const walls = Array.isArray(data) ? data : data.wallpapers;
+                document.getElementById('grid').innerHTML = walls.map(w => `
+                    <div class="card">
+                        <img src="${w.img}" loading="lazy">
+                        <button class="dl-btn" onclick="window.location.href='${w.url}'">DOWNLOAD</button>
+                    </div>
+                `).join('');
+            });
+    </script>
+</body>
+</html>
