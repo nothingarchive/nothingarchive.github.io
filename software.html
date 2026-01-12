@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Updates - Nothing Space</title>
+    <meta name="google-adsense-account" content="ca-pub-5140781527793808">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5140781527793808" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #000; --card: #0c0c0c; --text: #fff; --border: #222; }
+        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; padding: 20px; max-width: 800px; margin: 0 auto; }
+        
+        .nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; }
+        .back-btn { background: #fff; color: #000; padding: 5px 15px; text-decoration: none; font-weight: bold; border-radius: 5px; }
+        
+        select, .btn { width: 100%; padding: 15px; background: var(--card); border: 1px solid var(--border); color: #fff; font-family: inherit; font-size: 1.2rem; margin-bottom: 15px; border-radius: 10px; }
+        .btn { background: #fff; color: #000; cursor: pointer; font-weight: bold; }
+        
+        #resultBox { display: none; background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--border); text-align: center; }
+        img { width: 100px; margin-bottom: 10px; }
+        
+        footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; opacity: 0.7; }
+        .f-links a { margin: 0 10px; color: #fff; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <h1>SYSTEM UPDATE</h1>
+        <a href="index.html" class="back-btn">← HOME</a>
+    </div>
+
+    <div style="background: var(--card); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+        <h3>HOW TO UPDATE?</h3>
+        <p style="opacity: 0.7;">1. Download Beta Tool APK below.<br>2. Create "OTA" folder in storage.<br>3. Paste ZIP file there.</p>
+        <button class="btn" onclick="window.location.href='https://github.com/nothingcommunity/Testing/raw/refs/heads/main/Apps/Beta%20Updates%20Hub.apk'">DOWNLOAD TOOL APK</button>
+    </div>
+
+    <select id="swSelect" onchange="showData()">
+        <option value="">SELECT YOUR DEVICE</option>
+        <option value="p1">NOTHING PHONE (1)</option>
+        <option value="p2">NOTHING PHONE (2)</option>
+        <option value="p2a">NOTHING PHONE (2A)</option>
+        <option value="cmf1">CMF PHONE 1</option>
+    </select>
+
+    <div id="resultBox">
+        <img id="dImg" src="">
+        <h2 id="dName">DEVICE NAME</h2>
+        <button class="btn" id="dBtn" onclick="download()">DOWNLOAD FIRMWARE</button>
+    </div>
+
+    <footer>
+        <div class="f-links"><a href="about.html">About</a> | <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a></div>
+        <p>NOTHING SPACE © 2026</p>
+    </footer>
+
+    <script>
+        let DATA = {};
+        let currentUrl = "";
+        
+        // Load Data
+        fetch("https://raw.githubusercontent.com/nothingcommunity/Testing/main/Software/software.json")
+            .then(res => res.json()).then(d => { DATA = d.SOFTWARE; });
+
+        function showData() {
+            const val = document.getElementById('swSelect').value;
+            if(DATA[val]) {
+                document.getElementById('resultBox').style.display = "block";
+                document.getElementById('dImg').src = DATA[val].img;
+                document.getElementById('dName').innerText = DATA[val].disp;
+                currentUrl = DATA[val].url;
+            }
+        }
+        function download() {
+            if(currentUrl) window.location.href = currentUrl;
+            else alert("Select Device First");
+        }
+    </script>
+</body>
+</html>
