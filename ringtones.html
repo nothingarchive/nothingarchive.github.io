@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,39 +8,40 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5140781527793808" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root { --bg: #000; --card: #0c0c0c; --text: #fff; --border: #222; }
-        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; padding: 20px; max-width: 800px; margin: 0 auto; }
-        
-        .nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .back-btn { background: #fff; color: #000; padding: 5px 15px; text-decoration: none; font-weight: bold; border-radius: 5px; }
+        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; padding: 20px; max-width: 600px; margin: 0 auto; }
 
-        .search-box { display: flex; margin: 20px 0; gap: 10px; }
-        input { flex: 1; padding: 15px; background: var(--card); border: 1px solid var(--border); color: #fff; font-family: inherit; font-size: 1.2rem; border-radius: 10px; }
-        .go-btn { padding: 15px 20px; background: #fff; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 10px; }
+        .page-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        h1 { font-size: 2.5rem; margin: 0; }
+        .back-btn { background: #fff; color: #000; padding: 8px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 1.2rem; }
 
-        #player { display: none; text-align: center; background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
-        .disc { width: 150px; height: 150px; border-radius: 50%; border: 2px solid #333; margin-bottom: 20px; object-fit: cover; }
-        .controls { font-size: 2rem; margin: 20px 0; display: flex; justify-content: center; gap: 30px; cursor: pointer; }
-        .dl-btn { background: #fff; color: #000; padding: 10px 20px; border: none; font-family: inherit; font-size: 1.2rem; cursor: pointer; width: 100%; border-radius: 10px; }
-        
-        .rotate { animation: spin 10s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; opacity: 0.7; }
-        .f-links a { margin: 0 10px; color: #fff; text-decoration: none; }
+        /* SEARCH BAR */
+        .search-box { display: flex; background: #eee; padding: 5px; border-radius: 50px; margin-bottom: 20px; }
+        input { flex: 1; background: transparent; border: none; padding: 15px; font-size: 1.4rem; color: #000; outline: none; font-family: inherit; }
+        .go-btn { width: 50px; height: 50px; border-radius: 50%; background: #000; color: #fff; border: none; cursor: pointer; display: grid; place-items: center; font-size: 1.2rem; }
+
+        /* PLAYER CARD */
+        #player { display: none; background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 30px; text-align: center; }
+        .disc { width: 150px; height: 150px; border-radius: 50%; border: 2px solid #333; object-fit: cover; margin-bottom: 20px; }
+        .controls { display: flex; justify-content: center; gap: 30px; font-size: 2rem; margin: 20px 0; cursor: pointer; }
+        .btn { width: 100%; padding: 15px; background: #fff; color: #000; border: none; border-radius: 20px; font-size: 1.4rem; font-weight: bold; cursor: pointer; }
+
+        .spin { animation: rotate 5s linear infinite; }
+        @keyframes rotate { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="nav">
+    <div class="page-head">
         <h1>RINGTONES</h1>
-        <a href="index.html" class="back-btn">← HOME</a>
+        <a href="index.html" class="back-btn">← BACK</a>
     </div>
 
     <div class="search-box">
-        <input type="text" id="query" placeholder="Search Song Name...">
-        <button class="go-btn" onclick="searchMusic()">GO</button>
+        <input type="text" id="query" placeholder="SEARCH SONG...">
+        <button class="go-btn" onclick="searchMusic()"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
 
     <div id="player">
@@ -51,46 +52,46 @@
             <i class="fa-solid fa-play" id="pp" onclick="toggle()"></i>
             <i class="fa-solid fa-forward" onclick="next()"></i>
         </div>
-        <button class="dl-btn" onclick="download()">DOWNLOAD MP3</button>
+        <button class="btn" onclick="download()">DOWNLOAD MP3</button>
     </div>
-    
     <audio id="audio"></audio>
-
-    <footer>
-        <div class="f-links"><a href="about.html">About</a> | <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a></div>
-        <p>NOTHING SPACE © 2026</p>
-    </footer>
 
     <script>
         let list = [], idx = 0;
         const audio = document.getElementById('audio');
-        
+
         async function searchMusic() {
             const q = document.getElementById('query').value;
             if(!q) return;
-            const res = await fetch(`https://itunes.apple.com/search?limit=20&entity=song&term=${encodeURIComponent(q)}`);
-            const data = await res.json();
-            if(data.results.length) {
-                list = data.results;
-                idx = 0;
-                document.getElementById('player').style.display = 'block';
-                loadSong();
-            }
+            const btn = document.querySelector('.go-btn');
+            btn.innerHTML = '...';
+            try {
+                const res = await fetch(`https://itunes.apple.com/search?limit=20&entity=song&term=${encodeURIComponent(q)}`);
+                const data = await res.json();
+                if(data.results.length) {
+                    list = data.results; idx = 0;
+                    document.getElementById('player').style.display = 'block';
+                    loadSong();
+                }
+            } catch(e) {}
+            btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i>';
         }
 
         function loadSong() {
             const s = list[idx];
             document.getElementById('title').innerText = s.trackName;
-            document.getElementById('art').src = s.artworkUrl100.replace('100x100','300x300');
-            audio.src = s.previewUrl;
-            audio.play();
-            document.getElementById('pp').className = "fa-solid fa-pause";
-            document.getElementById('art').classList.add('rotate');
+            document.getElementById('art').src = s.artworkUrl100.replace('100x100','400x400');
+            audio.src = s.previewUrl; audio.play();
+            updateIcon(true);
         }
 
         function toggle() {
-            if(audio.paused) { audio.play(); document.getElementById('pp').className = "fa-solid fa-pause"; document.getElementById('art').classList.add('rotate'); }
-            else { audio.pause(); document.getElementById('pp').className = "fa-solid fa-play"; document.getElementById('art').classList.remove('rotate'); }
+            if(audio.paused) { audio.play(); updateIcon(true); } else { audio.pause(); updateIcon(false); }
+        }
+        function updateIcon(isPlaying) {
+            document.getElementById('pp').className = isPlaying ? "fa-solid fa-pause" : "fa-solid fa-play";
+            if(isPlaying) document.getElementById('art').classList.add('spin');
+            else document.getElementById('art').classList.remove('spin');
         }
         function next() { if(idx < list.length-1) { idx++; loadSong(); } }
         function prev() { if(idx > 0) { idx--; loadSong(); } }
